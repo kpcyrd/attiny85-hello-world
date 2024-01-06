@@ -1,0 +1,80 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 9 * * 1'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 🏗️ Setup build cache
+      uses: actions/cache@v3
+      continue-on-error: false
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-release-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-release-
+
+    - name: 🚚 Install dependencies
+      run: |
+        rustup component add rust-src
+        sudo apt-get install gcc-avr avr-libc
+
+    - name: 🛠️ Build
+      run: |
+        RUSTC_BOOTSTRAP=1 cargo build --release
+        avr-objcopy --output-target=binary target/avr-attiny85/release/attiny85-hello-world.elf target/avr-attiny85/release/attiny85-hello-world.bin
+
+    - name: 📦 Upload firmware
+      uses: actions/upload-artifact@v3
+      with:
+        name: firmware
+        path: |
+          target/avr-attiny85/release/attiny85-hello-world.elf
+          target/avr-attiny85/release/attiny85-hello-world.bin
+
+  clippy:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 🏗️ Setup build cache
+      uses: actions/cache@v3
+      continue-on-error: false
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-debug-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-debug-
+
+    - name: 🚚 Download rust-src
+      run: rustup component add rust-src
+
+    - name: 🛠️ Run clippy
+      run: RUSTC_BOOTSTRAP=1 cargo clippy
+
+  fmt:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run cargo fmt
+      run: cargo fmt --all -- --check
