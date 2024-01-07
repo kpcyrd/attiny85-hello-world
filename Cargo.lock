@@ -3,20 +3,6 @@
 version = 3
 
 [[package]]
-name = "arduino-hal"
-version = "0.1.0"
-source = "git+https://github.com/rahix/avr-hal#bfd6d7c3ec8215eb1598068ff8bf444dad8cb960"
-dependencies = [
- "attiny-hal",
- "avr-device",
- "avr-hal-generic",
- "cfg-if 1.0.0",
- "embedded-hal",
- "ufmt",
- "void",
-]
-
-[[package]]
 name = "attiny-hal"
 version = "0.1.0"
 source = "git+https://github.com/rahix/avr-hal#bfd6d7c3ec8215eb1598068ff8bf444dad8cb960"
@@ -29,7 +15,7 @@ dependencies = [
 name = "attiny85-hello-world"
 version = "0.1.0"
 dependencies = [
- "arduino-hal",
+ "attiny-hal",
  "avr-device",
  "embedded-hal",
  "panic-halt",
