@@ -1,16 +1,14 @@
 #![no_std]
 #![no_main]
 
-use attiny_hal::clock;
-use attiny_hal::delay::Delay;
-use attiny_hal::prelude::_embedded_hal_blocking_delay_DelayMs;
-use avr_device::attiny85::Peripherals;
+use attiny_hal::{clock, delay::Delay, Peripherals, Pins};
+use embedded_hal::blocking::delay::DelayMs;
 use panic_halt as _;
 
-#[avr_device::entry]
+#[no_mangle]
 fn main() -> ! {
     let pac = Peripherals::take().unwrap();
-    let pins = attiny_hal::Pins::new(pac.PORTB);
+    let pins = Pins::new(pac.PORTB);
 
     let mut delay = Delay::<clock::MHz8>::new();
 

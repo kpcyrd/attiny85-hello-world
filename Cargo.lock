@@ -16,7 +16,6 @@ name = "attiny85-hello-world"
 version = "0.1.0"
 dependencies = [
  "attiny-hal",
- "avr-device",
  "embedded-hal",
  "panic-halt",
 ]
@@ -27,21 +26,9 @@ version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9caff6ab631ca48909f0b505bd115a7fee718d1281c8f2995a74cfd316b939ae"
 dependencies = [
- "avr-device-macros",
  "bare-metal",
  "cfg-if 1.0.0",
  "vcell",
-]
-
-[[package]]
-name = "avr-device-macros"
-version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d4a6f123cc0e37b3d1099e5fc9a4a2bb7c0475a6c32f2e263d2e8849b9ae8fe"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]

@@ -19,6 +19,5 @@ opt-level = "s"
 
 [dependencies]
 attiny-hal = { git = "https://github.com/rahix/avr-hal", features = ["attiny85"] }
-avr-device = { version = "0.5.3", features = ["attiny85", "rt"] }
 embedded-hal = "0.2.7"
 panic-halt = "0.2.0"
